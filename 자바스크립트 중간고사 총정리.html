@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>자바스크립트 중간고사 총정리</title>
+<style>
+:root{--bg:#f6f8fb;--sf:#fff;--tx:#1b2433;--mu:#5b6678;--ac:#1f5fbf;--ac2:#e8f0fd;--bd:#d8dfea;--ok:#e9f7ee;--cd:#0f1a2e;--cf:#e6edf7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1522;--sf:#172033;--tx:#e8edf6;--mu:#9aa6ba;--ac:#7fb0ff;--ac2:#1c2a46;--bd:#2a3750;--ok:#14301f;--cd:#09101c}}
+*{box-sizing:border-box}html{scroll-padding-top:60px}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.75 "Noto Sans KR","Malgun Gothic",sans-serif}
+nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--sf);border-bottom:1px solid var(--bd);display:flex;gap:4px;overflow-x:auto;padding:8px 12px;z-index:5}
+nav a{white-space:nowrap;color:var(--tx);text-decoration:none;padding:6px 12px;border-radius:99px;font-size:14px}
+nav a:hover,nav a:focus-visible{background:var(--ac2);color:var(--ac);outline:none}
+main{max-width:760px;margin:0 auto;padding:24px 16px 80px}
+h1{font-size:30px;line-height:1.3;margin:20px 0 8px}
+h2{font-size:22px;margin:48px 0 12px;padding-left:12px;border-left:5px solid var(--ac)}
+h3{font-size:17px;margin:22px 0 6px}
+.sub{color:var(--mu);margin:0 0 8px}
+.box{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;margin:12px 0}
+.tip{background:var(--ac2);border-radius:10px;padding:12px 16px;margin:12px 0}
+pre{background:var(--cd);color:var(--cf);padding:12px 14px;border-radius:8px;overflow-x:auto;font:14px/1.6 Consolas,monospace;margin:8px 0}
+code{font-family:Consolas,monospace;background:var(--ac2);padding:1px 5px;border-radius:4px;font-size:.92em}pre code{background:none;padding:0}
+table{border-collapse:collapse;width:100%;font-size:15px}th,td{border:1px solid var(--bd);padding:7px 10px;text-align:left}th{background:var(--ac2)}
+.w{overflow-x:auto}
+details{background:var(--sf);border:1px solid var(--bd);border-radius:10px;margin:8px 0;padding:10px 14px}
+summary{cursor:pointer;font-weight:600}summary:focus-visible{outline:2px solid var(--ac)}
+details[open]>summary{margin-bottom:8px}
+.a{background:var(--ok);border-radius:8px;padding:8px 12px;margin-top:6px}
+</style></head><body>
+<nav><a href="#s1">변수 범위</a><a href="#s2">이벤트</a><a href="#s3">문서 객체</a><a href="#s4">함수·배열</a><a href="#s5">타이머</a><a href="#s6">기출 문제</a><a href="#s7">실습 코드</a></nav>
+<main>
+<h1>자바스크립트 중간고사 총정리</h1>
+<p class="sub">7강 자료를 중학생도 이해할 수 있게 풀어 쓴 요약입니다. 문제는 눌러서 정답을 확인하세요.</p>
+
+<h2 id="s1">1. 변수와 범위 (let vs var)</h2>
+<p>변수는 값을 담는 <b>상자</b>예요. 그런데 상자가 보이는 <b>범위</b>가 다릅니다.</p>
+<div class="w"><table><tr><th></th><th>let</th><th>var</th></tr>
+<tr><td>범위</td><td><code>{ }</code> 블록 안에서만 유효</td><td>블록을 무시하고 바깥까지 유효</td></tr>
+<tr><td>같은 이름 다시 선언</td><td>블록 안의 let은 <b>새 상자</b>를 만듦</td><td>같은 상자를 다시 쓰는 것</td></tr></table></div>
+<div class="tip">비유: <code>let</code>은 교실 안에서만 쓰는 이름표, <code>var</code>은 학교 전체에서 통하는 이름표.</div>
+<pre><code>let x = 100;
+if (x > 50) { let x = 10; }   // 블록 안의 새 x
+console.log(x);               // 100 (바깥 x는 그대로)</code></pre>
+
+<h2 id="s2">2. 이벤트</h2>
+<div class="box"><b>이벤트</b> = 사용자가 클릭, 키 입력 등을 했을 때 브라우저가 자바스크립트에게 알려주는 <b>통지</b>.<br>
+<b>이벤트 리스너</b> = 그 통지를 처리하는 <b>코드</b>. (mousedown 이벤트 → onmousedown 리스너)<br>
+<b>이벤트 타겟</b> = 이벤트를 일으킨 DOM 객체. <b>이벤트 객체</b> = 이벤트 정보(타겟, 마우스 위치, 버튼 등)를 담은 객체.</div>
+<h3>리스너 등록 3가지 방법</h3>
+<pre><code>&lt;p onclick="alert('hello')"&gt;      // 1. HTML 태그 안에 직접
+p.onclick = function(e){ alert("hello") }       // 2. 프로퍼티에 등록
+p.addEventListener("click", function(e){ alert("hello") }) // 3. 메소드로 등록</code></pre>
+<div class="tip">주의! addEventListener의 이벤트 이름에는 <b>on을 붙이지 않아요</b>. ("click" O, "onclick" X)</div>
+<h3>자주 나오는 이벤트</h3>
+<div class="w"><table><tr><th>이벤트</th><th>언제?</th></tr>
+<tr><td>DOMContentLoaded</td><td>브라우저가 문서 객체를 모두 읽었을 때 (대소문자 정확히!)</td></tr>
+<tr><td>keydown / keyup</td><td>키를 누를 때 / 뗄 때 (keypress는 한글 처리 문제)</td></tr>
+<tr><td>onwheel</td><td>마우스 휠을 굴릴 때</td></tr>
+<tr><td>onmousemove</td><td>마우스를 움직일 때 (e.clientX, e.clientY가 위치)</td></tr></table></div>
+
+<h2 id="s3">3. 문서 객체(DOM) 다루기</h2>
+<div class="w"><table><tr><th>하고 싶은 일</th><th>코드</th></tr>
+<tr><td>id로 하나 찾기</td><td><code>document.getElementById("div1")</code></td></tr>
+<tr><td>선택자로 하나 / 여러 개 찾기</td><td><code>querySelector("#id")</code> / <code>querySelectorAll("li")</code></td></tr>
+<tr><td>글자 바꾸기</td><td><code>textContent</code>, <code>innerText</code>, <code>innerHTML</code> (htmlContent는 없음!)</td></tr>
+<tr><td>스타일 바꾸기</td><td><code>obj.style.backgroundColor = "orchid"</code></td></tr>
+<tr><td>태그 만들기 → 붙이기</td><td><code>createElement("li")</code> → <code>appendChild(li)</code></td></tr>
+<tr><td>태그 지우기</td><td><code>removeChild(마지막자식)</code></td></tr></table></div>
+<div class="tip"><code>innerHTML</code>은 태그까지 해석하고, <code>textContent</code>는 글자 그대로 넣어요. CSS 속성은 background-color처럼 쓰던 것을 JS에서는 <b>backgroundColor</b>(카멜 표기)로 씁니다.</div>
+
+<h2 id="s4">4. 함수, 배열, 문자열</h2>
+<h3>함수와 콜백</h3>
+<p>함수도 값이라서 <b>다른 함수에 전달</b>할 수 있어요. 이렇게 전달하는 함수가 <b>콜백 함수</b>.</p>
+<pre><code>function callThreeTimes(callback){ for(let i=0;i&lt;3;i++) callback(i) }
+function print(i){ console.log(`${i}번째 함수 호출`) }
+callThreeTimes(print)   // 0번째, 1번째, 2번째</code></pre>
+<p>익명 함수(<code>function(){}</code>)와 선언적 함수(<code>function f(){}</code>) 이름이 같으면, 실행 순서상 <b>나중에 대입한 값</b>이 이깁니다.</p>
+<h3>템플릿 리터럴</h3>
+<p>백틱(`)과 <code>${변수}</code>로 문자열을 편하게 만들어요. <code>`${a} ${c} ${b}`</code></p>
+<h3>++ 와 -- (앞 / 뒤)</h3>
+<div class="box"><code>number++</code> = 쓰고 나서 올림 / <code>++number</code> = 올리고 나서 씀.</div>
+<h3>배열 (Array)</h3>
+<p>객체는 <code>new</code>로 만들어요. <code>new Array("jan","Feb")</code>와 <code>["jan","Feb"]</code>는 같습니다. <code>length</code>는 개수이고, 값을 대입하면 <b>배열 크기를 늘릴 수 있어요</b>.</p>
+<h3>forEach · filter</h3>
+<pre><code>numbers.forEach((n, index) =&gt; { ... })        // 하나씩 꺼내 실행
+numbers.filter((x) =&gt; x % 2 == 1)             // 조건에 맞는 것만 모은 새 배열</code></pre>
+<h3>문자열 메소드</h3>
+<p><code>let text = "Web Programming"</code></p>
+<div class="w"><table><tr><th>코드</th><th>결과</th></tr>
+<tr><td>text.length</td><td>15 (공백도 1글자)</td></tr><tr><td>text[2]</td><td>b</td></tr>
+<tr><td>text.split(" ").length</td><td>2</td></tr>
+<tr><td>text.replace("Web","JavaScript")</td><td>JavaScript Programming</td></tr>
+<tr><td>text.charAt(4)</td><td>P (인덱스는 0부터, 4번째 칸은 대문자 P)</td></tr></table></div>
+
+<h2 id="s5">5. 타이머</h2>
+<div class="w"><table><tr><th>함수</th><th>역할</th></tr>
+<tr><td>setTimeout / clearTimeout</td><td>정해진 시간 뒤에 <b>한 번</b> 실행 / 취소</td></tr>
+<tr><td>setInterval / clearInterval</td><td>정해진 시간마다 <b>반복</b> 실행 / 중지</td></tr></table></div>
+<div class="tip">시간 단위는 <b>밀리초(1000ms = 1초)</b>. <code>setInterval("f()", 500)</code>은 0.5초마다 실행해요.</div>
+
+<h2 id="s6">6. 기출 문제 (눌러서 정답 보기)</h2>
+<div id="qs"></div>
+
+<h2 id="s7">7. 실습 코드 정답</h2>
+<details><summary>이미지 클릭할 때마다 90도 회전</summary><pre><code>var n = 90;
+function rotate(obj){
+  obj.style.transform = "rotate(" + n + "deg)";
+  n += 90; n %= 360;
+}
+// &lt;img onclick="rotate(this)"&gt;</code></pre></details>
+<details><summary>배열의 최댓값 찾는 max()</summary><pre><code>const max = function(array){
+  let output = array[0]
+  for (const data of array){ if (output &lt; data) output = data }
+  return output
+}
+document.write(max([1,2,3,4]))   // 4</code></pre><p>첫 값을 최댓값으로 두고, 더 큰 값을 만나면 바꾸는 방식이에요.</p></details>
+<details><summary>innerHTML로 고양이 사진 보이기</summary><pre><code>function change(){
+  let p = document.querySelector("#firstP");
+  p.innerHTML = "나의 &lt;img src='media/cat1.png'&gt; 고양이";
+}</code></pre></details>
+<details><summary>select 선택한 사이트로 이동 (window.location)</summary><pre><code>function load(){
+  let select = document.getElementById("site");
+  window.location = select.options[select.selectedIndex].value;
+}</code></pre></details>
+<details><summary>this 활용: 누른 요소의 크기·색 바꾸기</summary><pre><code>function change(obj, size, color){
+  obj.style.color = color;
+  obj.style.fontSize = size;
+}
+// onclick="change(this, '30px', 'red')"</code></pre><p><code>this</code>는 "지금 클릭된 바로 그 요소"예요.</p></details>
+<details><summary>마우스 휠로 이미지 확대/축소</summary><pre><code>function controlImageSize(e, img){
+  let mySize = document.getElementById("size");
+  if (e.wheelDelta &gt; 0){ img.width -= img.width*0.05; img.height -= img.height*0.05 }
+  else { img.width += img.width*0.05; img.height += img.height*0.05 }
+  mySize.innerHTML = img.width + "x" + img.height;
+}</code></pre></details>
+<details><summary>이미지 커서 만들기 (onmousemove)</summary><pre><code>function makeCursor(){
+  cursor = document.getElementById("cursor");
+  cursor.style.zIndex = 100;   // 맨 위에 보이게
+  document.onmousemove = function(e){
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top  = e.clientY + "px";
+  }
+}</code></pre></details>
+<details><summary>항목 추가 / 마지막 항목 삭제</summary><pre><code>const list = document.getElementById("list");
+document.getElementById("add").onclick = () =&gt; {
+  const li = document.createElement("li");
+  li.textContent = "새 항목";
+  list.appendChild(li);
+};
+document.getElementById("del").onclick = () =&gt; {
+  if (list.lastElementChild) list.removeChild(list.lastElementChild);
+};</code></pre></details>
+<details><summary>별 이동 (첫째 → 둘째 → 셋째 → 첫째)</summary><pre><code>const boxes = ["first","second","third"];
+let pos = 0, count = 0;
+const star = document.createElement("div");
+star.textContent = "★"; star.style.fontSize = "40px";
+document.getElementById(boxes[0]).appendChild(star);
+move.onclick = () =&gt; {
+  pos = (pos + 1) % 3;            // 3번째 다음은 다시 0
+  document.getElementById(boxes[pos]).appendChild(star);
+  count++; document.getElementById("count").textContent = `이동 횟수 : ${count}회`;
+};
+reset.onclick = () =&gt; {
+  pos = 0; count = 0;
+  document.getElementById("first").appendChild(star);
+  document.getElementById("count").textContent = "이동 횟수 : 0회";
+};</code></pre></details>
+<details><summary>글자 수 세기 (keyup)</summary><pre><code>const ta = document.querySelector("textarea");
+const h1 = document.querySelector("h1");
+ta.addEventListener("keyup", () =&gt; {
+  h1.textContent = `글자 수 : ${ta.value.length}`;
+});</code></pre></details>
+<details><summary>건강 식품 표: 홀수 줄만 회색</summary><pre><code>const table = document.getElementById("foodTable");
+foods.forEach((food, index) =&gt; {
+  const tr = document.createElement("tr");
+  const td = document.createElement("td");
+  td.textContent = food;
+  if (index % 2 == 0) tr.style.backgroundColor = "lightgray";
+  tr.appendChild(td); table.appendChild(tr);
+});</code></pre><p>CSS로는 <code>ul li:nth-child(odd)</code>로 같은 효과를 낼 수 있어요.</p></details>
+</main>
+<script>
+const Q=[
+["var/let 문제: let 코드(왼쪽)와 var 코드(오른쪽)의 출력은?","왼쪽 ③ Farewell, 오른쪽 ② Good morning. let은 for 블록 안의 새 변수라 바깥에 영향이 없고, var은 같은 변수를 덮어씁니다."],
+["let value=1; if(true){let value=2; console.log(value)} 와 let x=100; if(x>50){let x=10} console.log(x) 의 출력은?","왼쪽 ② 2 (블록 안에서 출력), 오른쪽 ② 100."],
+["let x=50; if(x>=50){let x=10; document.write(x);} document.write(x); 의 결과","1050 (안쪽 10, 바깥 50)"],
+["문서 객체 내부 글자를 조작하는 속성이 아닌 것은?","① htmlContent (존재하지 않는 속성)"],
+["&lt;strong&gt; 클릭 시 &quot;strong+이벤트 흐름&quot; 출력하기","strong.addEventListener(\"click\", function(e){ alert(e.target.id + \"+\" + e.target.textContent.trim()) }) — 이벤트 객체의 target으로 클릭된 요소를 알아냅니다."],
+["number 출력 문제 (10에서 시작, ++/-- 순서)","출력은 10, 11, 14, 13, 12 순서이고 마지막 number는 12. 뒤에 붙은 ++/--는 출력한 뒤에 변하고, 앞에 붙으면 변한 뒤에 출력돼요."],
+["익명 함수와 선언적 함수가 같은 이름일 때 함수() 호출 결과","익명 함수입니다. (선언적 함수가 먼저 준비되지만, 익명 함수 대입이 실행되면서 덮어씀)"],
+["p.onclick = function(e){ alert(\"hello\") } 를 addEventListener로","p.addEventListener(\"click\", function(e){ alert(\"hello\") });"],
+["a,b,c,d,e를 템플릿 리터럴로 result 만들기","let result = `${a} ${c} ${b} ${e} ${d}`;  → 1 plus 2 equals 3"],
+["객체를 생성할 때 쓰는 키워드","③ new"],
+["배열 설명 중 틀린 것","④ length를 5로 지정하면 배열 크기를 늘릴 수 있으므로 &quot;늘일 수 없다&quot;는 설명이 틀림."],
+["이벤트 설명으로 틀린 것","③ 이벤트는 타겟에서만 처리하지 않아도 됨 (부모 요소 등에서도 처리 가능, 이벤트 흐름)"],
+["이벤트 리스너 중 같지 않은 것","① addEventListener(\"onclick\", ...) — 이름은 \"click\"이어야 함"],
+["Web Programming 문자열 메소드 결과","15, b, 2, JavaScript Programming, P"],
+["let sum=0; ... setInterval(\"f()\", 500) 해석","④ 0.5초 간격으로 f()가 10번 호출 (sum이 10이 되면 clearInterval)"],
+["문서 객체를 모두 읽었을 때 실행되는 이벤트","② DOMContentLoaded"],
+["문서 객체 글자를 조작하는 속성이 아닌 것","④ htmlContent"],
+["id가 div1인 객체 / 리스너 등록 4가지","① let obj = document.getElementById(\"div1\")<br>② obj.addEventListener(\"click\", f)<br>③ obj.onclick = f<br>④ obj.onclick = function(){ obj.style.backgroundColor = \"orchid\" }"],
+["filter 문제: [273,52,103,32,57,25,76]","홀수 → 273,103,57,25 / 100 이하 → 57,25 / 5로 나눈 나머지 0 → 25 (결과는 25). 앞 결과에서 계속 걸러 나가는 것이 포인트!"]
+];
+document.getElementById("qs").innerHTML=Q.map((q,i)=>`<details><summary>Q${i+1}. ${q[0]}</summary><div class="a">${q[1]}</div></details>`).join("");
+</script>
+</body></html>
